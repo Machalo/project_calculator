@@ -22,7 +22,6 @@ function div(a,b){
 let firstNum = "";
 let operator = "";
 let secondNum = "";
-let equal = false;
 let virgule = false;
 
 function operate (numOne, ope, numTwo){
@@ -54,11 +53,11 @@ const screenResult = document.getElementById("result");
 
 buttons.forEach((button) => {
     button.addEventListener("click", () => {
+        console.log(firstNum,operator,secondNum)
         if (button.id == "clear"){
             firstNum = "";
             operator = "";
             secondNum = "";
-            equal = false;
             virgule = false;
             screenResult.textContent = 0;
             screenOp.textContent = 0;
@@ -69,7 +68,7 @@ buttons.forEach((button) => {
                 screenOp.textContent = firstNum;
                 screenResult.textContent = 0;
             }
-            else if (button.className == "operator" && firstNum.length >= 1) {
+            else if (button.className == "operator" && (firstNum.length >= 1 || !isNaN(firstNum))) {
                 operator += button.id;
                 screenOp.textContent = operator;
                 virgule = false;
@@ -79,6 +78,10 @@ buttons.forEach((button) => {
                 screenOp.textContent = firstNum;
                 virgule = true;
             }
+            else if(button.id == "backspace" && !isNaN(firstNum)){
+                firstNum = firstNum.slice(0,-1);
+                screenOp.textContent = firstNum;
+            }
         }
         else if (operator.length >= 1){
             if (button.className == "number" && secondNum.length <= 9) {
@@ -86,8 +89,11 @@ buttons.forEach((button) => {
                 screenOp.textContent = secondNum;
             }
             else if (button.className == "equal" && secondNum.length >= 1){
-                screenResult.textContent = operate(firstNum,operator,secondNum);
-                equal =true;
+                let calc = operate(firstNum,operator,secondNum)
+                screenResult.textContent = calc;
+                firstNum = calc;
+                operator = "";
+                secondNum = "";
                 virgule = false;
             }
             else if (button.className == "dot" && secondNum.length >= 1 && virgule == false) {
@@ -95,14 +101,12 @@ buttons.forEach((button) => {
                 screenOp.textContent = secondNum;
                 virgule = true;
             }
+            else if (button.id == "backspace" && secondNum.length >= 1){
+                secondNum = secondNum.slice(0,-1);
+                screenOp.textContent = secondNum;
+            }
         }
-        
-        if (equal == true){
-            firstNum = "";
-            operator = "";
-            secondNum = "";
-            equal = false;
-        }
+        console.log(firstNum,operator,secondNum)
         
     })
 })
