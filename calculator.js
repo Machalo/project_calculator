@@ -23,6 +23,7 @@ let firstNum = "";
 let operator = "";
 let secondNum = "";
 let virgule = false;
+let expo = false;
 
 function operate (numOne, ope, numTwo){
     let calcul = 0;
@@ -40,6 +41,7 @@ function operate (numOne, ope, numTwo){
     }
 
     if (calcul > 999999999 || calcul < -999999999) {
+        expo = true;
         return calcul.toExponential(6);
     }
     else{
@@ -58,6 +60,7 @@ buttons.forEach((button) => {
             operator = "";
             secondNum = "";
             virgule = false;
+            expo = false;
             screenResult.textContent = 0;
             screenOp.textContent = 0;
         }
@@ -72,12 +75,12 @@ buttons.forEach((button) => {
                 screenOp.textContent = operator;
                 virgule = false;
             }
-            else if (button.className == "dot" && firstNum.length >= 1 && virgule == false) {
+            else if (button.className == "dot" && firstNum.length >= 1 && virgule == false && expo == false) {
                 firstNum += button.id;
                 screenOp.textContent = firstNum;
                 virgule = true;
             }
-            else if(button.id == "backspace" && !isNaN(firstNum)){
+            else if(button.id == "backspace" && firstNum.length >= 1 && expo == false){
                 firstNum = firstNum.slice(0,-1);
                 screenOp.textContent = firstNum;
             }
