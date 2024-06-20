@@ -53,6 +53,15 @@ const buttons = document.querySelectorAll("button");
 const screenOp = document.getElementById("operation");
 const screenResult = document.getElementById("result");
 
+addEventListener("keydown", function(event) {
+    buttons.forEach((button) => {
+        if (button.id == event.key){
+            event.preventDefault();
+            document.getElementById(button.id).click();
+        }
+    })
+  });
+
 buttons.forEach((button) => {
     button.addEventListener("click", () => {
         if (button.id == "clear"){
@@ -80,7 +89,7 @@ buttons.forEach((button) => {
                 screenOp.textContent = firstNum;
                 virgule = true;
             }
-            else if(button.id == "backspace" && firstNum.length >= 1 && expo == false){
+            else if(button.id == "Backspace" && firstNum.length >= 1 && expo == false){
                 firstNum = firstNum.slice(0,-1);
                 screenOp.textContent = firstNum;
             }
@@ -98,12 +107,25 @@ buttons.forEach((button) => {
                 secondNum = "";
                 virgule = false;
             }
+            else if (button.className == "operator" && secondNum.length == 0) {
+                operator = button.id;
+                screenOp.textContent = button.id;
+            }
+            else if (button.className == "operator" && secondNum.length >= 1){
+                let calc = operate(firstNum,operator,secondNum)
+                screenResult.textContent = calc;
+                screenOp.textContent = button.id;
+                firstNum = calc;
+                operator = button.id;
+                secondNum = "";
+                virgule = false;
+            }
             else if (button.className == "dot" && secondNum.length >= 1 && virgule == false) {
                 secondNum += button.id;
                 screenOp.textContent = secondNum;
                 virgule = true;
             }
-            else if (button.id == "backspace" && secondNum.length >= 1){
+            else if (button.id == "Backspace" && secondNum.length >= 1){
                 secondNum = secondNum.slice(0,-1);
                 screenOp.textContent = secondNum;
             }
