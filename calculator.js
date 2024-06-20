@@ -39,8 +39,8 @@ function operate (numOne, ope, numTwo){
         calcul = div(numOne,numTwo);
     }
 
-    if (calcul >= 999999999) {
-        return calcul.toExponential(7);
+    if (calcul > 999999999 || calcul < -999999999) {
+        return calcul.toExponential(6);
     }
     else{
         return calcul;
@@ -53,7 +53,6 @@ const screenResult = document.getElementById("result");
 
 buttons.forEach((button) => {
     button.addEventListener("click", () => {
-        console.log(firstNum,operator,secondNum)
         if (button.id == "clear"){
             firstNum = "";
             operator = "";
@@ -68,7 +67,7 @@ buttons.forEach((button) => {
                 screenOp.textContent = firstNum;
                 screenResult.textContent = 0;
             }
-            else if (button.className == "operator" && (firstNum.length >= 1 || !isNaN(firstNum))) {
+            else if (button.className == "operator" && (firstNum.length >= 1 || (!isNaN(firstNum) && firstNum != ""))) {
                 operator += button.id;
                 screenOp.textContent = operator;
                 virgule = false;
@@ -105,9 +104,7 @@ buttons.forEach((button) => {
                 secondNum = secondNum.slice(0,-1);
                 screenOp.textContent = secondNum;
             }
-        }
-        console.log(firstNum,operator,secondNum)
-        
+        }        
     })
 })
 
